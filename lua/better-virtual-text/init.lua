@@ -17,9 +17,7 @@ local function hl_exists(hl)
 end
 
 local function setup_highlight_groups(highlights)
-	print(highlights)
 	for hl, link in pairs(highlights_link) do
-		print(hl)
 		if highlights[hl] then
 			vim.api.nvim_set_hl(0, hl, highlights[hl])
 		elseif not hl_exists(hl) then

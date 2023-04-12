@@ -1,5 +1,7 @@
 # Better Virtual Text
 
+**Disclaimer** This is for my personal configuration. Use at your own risk!
+
 ![Screenshot](./assets/screenshot.png)
 
 Improve virtual text of diagnostic messages in Neovim.
@@ -48,20 +50,21 @@ require("better-virtual-text").setup({
 })
 ```
 
-Then we can it up through `vim.diagnostic.config`:
+Then we can enable it up through `vim.diagnostic.config`:
 
 ```lua
 vim.diagnostic.config({
+  virtual_text = false, -- Don't forget to disable virtual_text
   better_virtual_text = {
     prefix = function(diagnostic)
       if diagnostic.severity == vim.diagnostic.severity.ERROR then
-        return 
+        return   -- Nerd font icon for error
       elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-        return 
+        return   -- Nerd font icon for warning
       elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-        return 
+        return   -- Nerd font icon for info
       else
-        return 
+        return   -- Nerd font icon for hint
       end
     end,
   }

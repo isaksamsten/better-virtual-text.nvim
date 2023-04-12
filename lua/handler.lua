@@ -201,15 +201,18 @@ function M.show(namespace, bufnr, diagnostics, opts)
 	opts = opts or {}
 
 	local severity
-	if opts.virtual_text then
-		if opts.virtual_text.format then
-			diagnostics = reformat_diagnostics(opts.virtual_text.format, diagnostics)
+	if opts.better_virtual_text then
+		if opts.better_virtual_text.format then
+			diagnostics = reformat_diagnostics(opts.better_virtual_text.format, diagnostics)
 		end
-		if opts.virtual_text.source and (opts.virtual_text.source ~= "if_many" or count_sources(bufnr) > 1) then
+		if
+			opts.better_virtual_text.source
+			and (opts.better_virtual_text.source ~= "if_many" or count_sources(bufnr) > 1)
+		then
 			diagnostics = prefix_source(diagnostics)
 		end
-		if opts.virtual_text.severity then
-			severity = opts.virtual_text.severity
+		if opts.better_virtual_text.severity then
+			severity = opts.better_virtual_text.severity
 		end
 	end
 
@@ -224,7 +227,7 @@ function M.show(namespace, bufnr, diagnostics, opts)
 		if severity then
 			line_diagnostics = filter_by_severity(severity, line_diagnostics)
 		end
-		local virt_texts = M._get_virt_text_chunks(line_diagnostics, opts.better_virtual_text or opts.virtual_text)
+		local virt_texts = M._get_virt_text_chunks(line_diagnostics, opts.better_virtual_text)
 
 		if virt_texts then
 			api.nvim_buf_set_extmark(bufnr, virt_text_ns, line, 0, {
