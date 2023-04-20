@@ -58,13 +58,13 @@ vim.diagnostic.config({
   better_virtual_text = {
     prefix = function(diagnostic)
       if diagnostic.severity == vim.diagnostic.severity.ERROR then
-        return   -- Nerd font icon for error
+        return ""  -- Nerd font icon for error
       elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-        return   -- Nerd font icon for warning
+        return ""  -- Nerd font icon for warning
       elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-        return   -- Nerd font icon for info
+        return ""  -- Nerd font icon for info
       else
-        return   -- Nerd font icon for hint
+        return ""  -- Nerd font icon for hint
       end
     end,
   }
