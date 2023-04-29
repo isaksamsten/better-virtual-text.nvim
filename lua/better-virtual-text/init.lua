@@ -27,7 +27,12 @@ local function setup_highlight_groups(highlights)
 end
 
 function M.setup(opts)
-	setup_highlight_groups(opts.highlights)
+	vim.api.nvim_create_autocmd("ColorScheme", {
+		callback = function()
+			setup_highlight_groups(opts.highlights)
+		end,
+	})
+
 	vim.diagnostic.handlers["better_virtual_text"] = require("handler")
 end
 
