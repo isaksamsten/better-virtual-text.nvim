@@ -32,7 +32,7 @@ function M.setup(opts)
 			setup_highlight_groups(opts.highlights)
 		end,
 	})
-
+	setup_highlight_groups(opts.highlights)
 	vim.diagnostic.handlers["better_virtual_text"] = require("handler")
 end
 
