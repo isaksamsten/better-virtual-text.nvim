@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 local highlights_link = {
 	["BetterVirtualTextError"] = "DiagnosticVirtualTextError",
