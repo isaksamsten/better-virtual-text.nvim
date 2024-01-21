@@ -185,7 +185,7 @@ local function save_extmarks(namespace, bufnr)
 	diagnostic_cache_extmarks[bufnr][namespace] = api.nvim_buf_get_extmarks(bufnr, namespace, 0, -1, { details = true })
 end
 
-M = {}
+local M = {}
 function M.show(namespace, bufnr, diagnostics, opts)
 	vim.validate({
 		namespace = { namespace, "n" },
@@ -201,6 +201,10 @@ function M.show(namespace, bufnr, diagnostics, opts)
 	opts = opts or {}
 
 	local severity
+	if not vim.api.nvim_buf_is_loaded(bufnr) then
+		return
+	end
+
 	if opts.better_virtual_text then
 		if opts.better_virtual_text.format then
 			diagnostics = reformat_diagnostics(opts.better_virtual_text.format, diagnostics)
@@ -218,7 +222,8 @@ function M.show(namespace, bufnr, diagnostics, opts)
 
 	local ns = vim.diagnostic.get_namespace(namespace)
 	if not ns.user_data.virt_text_ns then
-		ns.user_data.virt_text_ns = api.nvim_create_namespace("")
+		ns.user_data.virt_text_ns =
+			api.nvim_create_namespace(string.format("%s/diagnostic/better_virtual_text", ns.name))
 	end
 
 	local virt_text_ns = ns.user_data.virt_text_ns
@@ -231,8 +236,11 @@ function M.show(namespace, bufnr, diagnostics, opts)
 
 		if virt_texts then
 			api.nvim_buf_set_extmark(bufnr, virt_text_ns, line, 0, {
-				hl_mode = "combine",
+				hl_mode = opts.better_virtual_text.hl_mode or "combine",
 				virt_text = virt_texts,
+				virt_text_pos = opts.better_virtual_text.virt_text_pos,
+				virt_text_hide = opts.better_virtual_text.virt_text_hide,
+				virt_text_win_col = opts.better_virtual_text.virt_text_win_col,
 			})
 		end
 	end
